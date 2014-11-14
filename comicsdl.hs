@@ -47,7 +47,7 @@ parsePage contents = Page <$> url <*> number <*> title <*> link "NextLink" <*> l
           get getter axis = headMay $ Text.unpack `fmap` ((page $// axis) >>= getter)
 
           url       = get (attribute "src") (element "img" >=> hasAttribute "id")
-          link name = Just . ("http://comicsia.ru" ++) <$> get (attribute "href") (element "a" >=> attributeIs "id" name)
+          link name = Just $ ("http://comicsia.ru" ++) <$> get (attribute "href") (element "a" >=> attributeIs "id" name)
           number    = read <$> get ($// content) (element "div" >=> attributeIs "id" "strip-number")
           title     = get ($// content) (element "title")
 
