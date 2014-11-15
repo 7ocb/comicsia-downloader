@@ -71,9 +71,11 @@ saveComics page = liftIO $ do
 
   putStrLn $ "Wrote " ++ fileName
 
+maybeM = maybe (return())           
+           
 goDownload nextPage page =
   case (nextPage page) of
-    Just url -> pageFromUrl url >>= maybe (return ()) process
+    Just url -> pageFromUrl url >>= maybeM process
 
     Nothing -> return ()
 
@@ -147,7 +149,7 @@ locatePage url = do
     Just page -> do
            let go next = do
                    liftIO $ putStrLn $ "skipping strip: " ++ (show $ stripNumber page)
-                   maybe (return ()) locatePage $ next page
+                   maybeM locatePage $ next page
                goDl next = goDownload next page
 
 
